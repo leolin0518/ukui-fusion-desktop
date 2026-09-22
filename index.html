@@ -672,7 +672,8 @@ body[data-perf="minimal"] .win.pinned{box-shadow:none;border-color:var(--brand-5
 #cal .dy:hover:not(.today){background:var(--surface-3)}
 /* 托盘气泡 */
 #traypop{width:300px;right:8px;bottom:calc(var(--tb-h) + 8px);padding:14px}
-.vol{display:flex;align-items:center;gap:12px;margin-top:10px}
+#traypop.pop-vol{width:184px;padding:12px}
+#traypop.pop-net{width:268px}
 .slider{flex:1;height:4px;border-radius:var(--r-full);background:var(--surface-3);position:relative}
 .slider i{position:absolute;left:0;top:0;height:100%;border-radius:var(--r-full);background:var(--brand-500)}
 .slider i::after{content:"";position:absolute;right:-6px;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--brand-500);box-shadow:var(--e1)}
@@ -680,6 +681,75 @@ body[data-perf="minimal"] .win.pinned{box-shadow:none;border-color:var(--brand-5
 .wifi-i{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:var(--r-sm);font-size:13px}
 .wifi-i:hover{background:var(--surface-3)}
 .wifi-i .on{margin-left:auto;font-size:11.5px;color:var(--brand-500)}
+
+/* ---- v4：音量面板（纵向滑块 · 6 元素 · 不查询音频服务） ---- */
+.vp{display:flex;flex-direction:column;align-items:center;gap:10px}
+.vp .num{font-size:15px;font-weight:600;color:var(--text-1);height:20px;line-height:20px}
+.vp .num.muted{color:var(--text-3)}
+.vsl{
+  position:relative;width:26px;height:132px;border-radius:var(--r-md);
+  background:var(--surface-2);border:1px solid var(--border-1);cursor:pointer;flex:none;
+  display:flex;align-items:flex-end;justify-content:center;overflow:hidden;
+}
+.vsl .fill{position:absolute;left:0;right:0;bottom:0;background:var(--brand-500);transition:height var(--t-fast) var(--ease-std)}
+.vsl .knob{position:absolute;left:50%;width:20px;height:6px;margin-left:-10px;border-radius:3px;background:var(--surface-0);box-shadow:var(--e1)}
+.vsl.muted .fill{background:var(--text-3)}
+.vmute{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--border-1);background:var(--surface-2);color:var(--text-2);
+  transition:background var(--t-fast) var(--ease-std),color var(--t-fast) var(--ease-std);flex:none;
+}
+.vmute:hover{background:var(--surface-3);color:var(--text-1)}
+.vmute.on{background:var(--brand-500);color:#fff;border-color:transparent}
+.vmute svg{width:18px;height:18px}
+.vp .hint{font-size:11.5px;color:var(--text-3);text-align:center}
+
+/* ---- v4：WiFi 胶囊分段面板 ---- */
+.pill{
+  display:flex;align-items:center;gap:10px;width:100%;height:40px;padding:0 10px 0 12px;
+  border-radius:20px;background:var(--surface-2);border:1px solid var(--border-1);cursor:default;
+  transition:background var(--t-fast) var(--ease-std);
+}
+.pill:hover{background:var(--surface-3)}
+.pill.on{background:var(--brand-500);border-color:transparent;color:#fff}
+.pill.on .sub{color:rgba(255,255,255,.85)}
+.pill svg{width:18px;height:18px;flex:none}
+.pill .nm{font-size:13.5px}
+.pill .sub{font-size:11.5px;color:var(--text-3);margin-left:auto}
+.pill .cv{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;color:inherit}
+.pill .cv:hover{background:var(--surface-3)}
+.pill.on .cv:hover{background:rgba(255,255,255,.2)}
+.pill .cv svg{width:14px;height:14px;transition:transform var(--t-fast) var(--ease-std)}
+.pill .cv.open svg{transform:rotate(90deg)}
+.net-body{display:none;margin-top:8px}
+.net-body.open{display:block}
+
+/* ---- v4：开始菜单电源分裂按钮 ---- */
+.sb{
+  display:flex;align-items:center;height:32px;border-radius:var(--r-md);
+  background:var(--surface-2);border:1px solid var(--border-1);overflow:hidden;flex:none;
+}
+.sb .sb-main{
+  display:flex;align-items:center;gap:6px;height:100%;padding:0 12px;color:var(--text-1);
+  transition:background var(--t-fast) var(--ease-std);cursor:default;
+}
+.sb .sb-main:hover{background:var(--danger);color:#fff}
+.sb .sb-main svg{width:16px;height:16px;flex:none}
+.sb .sb-main .lb{font-size:12.5px;white-space:nowrap}
+.sb .sb-sep{width:1px;height:18px;background:var(--border-2);flex:none}
+.sb .sb-arrow{
+  display:grid;place-items:center;width:28px;height:100%;flex:none;color:var(--text-2);
+  transition:background var(--t-fast) var(--ease-std);cursor:default;
+}
+.sb .sb-arrow:hover{background:var(--surface-3);color:var(--text-1)}
+.sb .sb-arrow svg{width:14px;height:14px}
+/* xs/sm 档：去掉「关机」文字，两半区仍各 ≥24px */
+html[data-size="xs"] .sb .sb-main .lb,
+html[data-size="sm"] .sb .sb-main .lb{display:none}
+html[data-size="xs"] .sb .sb-main,
+html[data-size="sm"] .sb .sb-main{padding:0 10px}
+/* 电源二级菜单 */
+#pwpop{z-index:7200;min-width:150px;padding:6px;right:8px;bottom:calc(var(--tb-h) + 8px)}
 /* Toast */
 #toasts{position:absolute;right:16px;top:16px;z-index:8000;display:flex;flex-direction:column;gap:10px;width:340px}
 .toast{
@@ -811,6 +881,7 @@ kbd{
       <div class="pop" id="notif" role="dialog" aria-label="通知中心"></div>
       <div class="pop" id="cal" role="dialog" aria-label="日历"></div>
       <div class="pop" id="traypop" role="dialog"></div>
+      <div class="pop" id="pwpop" role="menu" aria-label="电源菜单"></div>
       <div id="toasts"></div>
       <div id="switcher"><div class="sw-box" id="swBox"></div></div>
       <div id="hint"></div>
@@ -921,6 +992,11 @@ const ICON = {
   sync: () => S(`<path d="M20 12a8 8 0 0 1-13.6 5.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><path d="M4 12a8 8 0 0 1 13.6-5.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><path d="M17.9 1.9v4.6h-4.6M6.1 22.1v-4.6h4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`),
   pkg: () => S(`<path d="M12 3.2 4 7.2v9.6l8 4 8-4V7.2l-8-4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m4 7.2 8 4 8-4M12 11.2v9.6" stroke="currentColor" stroke-width="1.5" opacity=".7"/>`),
   dots: () => S(`<circle cx="6" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18" cy="12" r="1.7" fill="currentColor"/>`),
+  chev: () => S(`<path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`),
+  mute: () => S(`<path d="M4 9.5h3L11.5 6v12L7 14.5H4z" fill="currentColor"/><path d="m15.5 10 5 4m0-4-5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>`),
+  moon: () => S(`<path d="M20 14.2A8.4 8.4 0 0 1 9.8 4 8.6 8.6 0 1 0 20 14.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>`),
+  logout: () => S(`<path d="M14.5 4.5H6.6A1.6 1.6 0 0 0 5 6.1v11.8a1.6 1.6 0 0 0 1.6 1.6h7.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><path d="M12.6 12h6.9m0 0-2.6-2.6M19.5 12l-2.6 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`),
+  swap: () => S(`<circle cx="8.6" cy="8.6" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.4 19.4c.7-3 2.9-4.6 5.2-4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/><path d="M14.4 10.6h6.8m0 0-2.4-2.4M21.2 10.6l-2.4 2.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`),
 };
 const icon = (n, arg) => { const v = ICON[n]; return typeof v === 'function' ? v(arg) : (v || ''); };
 const iconBox = (n, size, radius) =>
@@ -1939,9 +2015,12 @@ function renderStart(){
         <div class="avatar">林</div>
         <div class="who">kylin<i>标准用户</i></div>
       </div>
-      <div style="display:flex;gap:2px">
-        <button class="pw" id="btnLock" title="锁屏">${icon('shield')}</button>
-        <button class="pw" id="btnPower" title="电源">${icon('power')}</button>
+      <div class="sb">
+        <div class="sb-main" id="btnPower" title="关机（点击立即执行）" role="button">
+          ${icon('power')}<span class="lb">关机</span>
+        </div>
+        <div class="sb-sep"></div>
+        <div class="sb-arrow" id="btnPowerMore" title="更多电源选项" role="button">${icon('chev')}</div>
       </div>
     </div>`;
   paintCats(); paintList();
@@ -1959,8 +2038,16 @@ function renderStart(){
     else if(e.key === 'Enter'){ e.preventDefault();
       const k = rows[startSel] && rows[startSel].dataset.app; if(k) launch(k); }
   });
-  $('#btnLock').addEventListener('click', ()=>hint('屏幕已锁定'));
-  $('#btnPower').addEventListener('click', ()=>hint('电源：休眠 / 重启 / 关机'));
+  // 分裂按钮：左半 = 直接关机（无二次确认）；右半 = 展开二级菜单
+  $('#btnPower').addEventListener('click', e => {
+    e.stopPropagation();
+    closeAllPops();
+    hint('正在关机…');
+  });
+  $('#btnPowerMore').addEventListener('click', e => {
+    e.stopPropagation();
+    powerMenu(e.currentTarget);
+  });
 }
 function paintCats(){
   $('#sCats').innerHTML = CATS.map(c =>
@@ -2043,23 +2130,103 @@ function renderCal(){
     </div>
     <div class="c-grid">${wd.map(w=>`<div class="wd">${w}</div>`).join('')}${cells}</div>`;
 }
+/* ---- v4：托盘状态（内存缓存，打开面板不查询任何系统服务） ---- */
+const VOL = {v:68, muted:false, last:68};
+const NET = {radio:true, ssid:'Kylin-Office', scan:false, list:['Kylin-Guest','TP-LINK_5G','CMCC-EDU']};
+
+function volPaint(){
+  const num = $('#vpNum'), sl = $('#vpSl');
+  if(!num || !sl) return;
+  const v = VOL.muted ? 0 : VOL.v;
+  num.textContent = VOL.muted ? '静音' : v;
+  num.classList.toggle('muted', VOL.muted);
+  sl.querySelector('.fill').style.height = v + '%';
+  sl.querySelector('.knob').style.bottom = 'calc(' + v + '% - 3px)';
+  sl.classList.toggle('muted', VOL.muted);
+  const mb = $('#vpMute'); if(mb) mb.classList.toggle('on', VOL.muted);
+  const ti = $('#trayVol'); if(ti) ti.title = '音量 ' + (VOL.muted ? '静音' : v + '%');
+}
+function setVol(v){
+  VOL.v = Math.max(0, Math.min(100, Math.round(v)));
+  if(VOL.v > 0){ VOL.muted = false; VOL.last = VOL.v; }
+  volPaint();
+}
+function toggleMute(){
+  VOL.muted = !VOL.muted;
+  if(!VOL.muted && VOL.v === 0) VOL.v = VOL.last || 40;
+  volPaint();
+}
+function wifiPaint(){
+  const pill = $('#netPill'); if(!pill) return;
+  pill.classList.toggle('on', NET.radio);
+  pill.querySelector('.nm').textContent = NET.radio ? 'Wi-Fi' : 'Wi-Fi 已关闭';
+  pill.querySelector('.sub').textContent = NET.radio ? NET.ssid : '飞行模式';
+}
+
 function trayPop(kind, anchor){
   const p = $('#traypop');
   if(kind === 'net'){
-    p.innerHTML = `<div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">${icon('wifi')} 网络</div>
-      <div class="wifi-list">
-        <div class="wifi-i">${icon('wifi')} Kylin-Office <span class="on">已连接</span></div>
-        <div class="wifi-i">${icon('wifi')} Kylin-Guest</div>
-        <div class="wifi-i">${icon('wifi')} TP-LINK_5G</div>
+    p.classList.remove('pop-vol'); p.classList.add('pop-net');
+    p.innerHTML = `
+      <div class="pill on" id="netPill">
+        ${icon('wifi')}
+        <span class="nm">Wi-Fi</span>
+        <span class="sub">${NET.ssid}</span>
+        <span class="cv" id="netCv" title="展开网络列表">${icon('chev')}</span>
+      </div>
+      <div class="net-body" id="netBody">
+        <div class="wifi-list" id="netList"></div>
       </div>
       <div class="msep"></div>
-      <div class="row" style="border:none;padding-top:8px"><div class="t" style="font-size:12.5px">飞行模式</div><div class="sw" data-toggle></div></div>`;
+      <div class="row" style="border:none;padding:9px 0 0">
+        <div class="t" style="font-size:12.5px">飞行模式</div>
+        <div class="sw${NET.radio ? '' : ' on'}" id="netAir"></div>
+      </div>
+      <div class="row" style="border:none;padding:9px 0 0">
+        <div class="t" style="font-size:12.5px;color:var(--text-2)">网络设置</div>
+        <span style="font-size:12px;color:var(--text-3)">›</span>
+      </div>`;
+    paintNetList();
+    wifiPaint();
+    $('#netPill').addEventListener('click', e => {
+      if(e.target.closest('#netCv')) return;
+      NET.radio = !NET.radio; NET.scan = false;
+      wifiPaint(); $('#netAir').classList.toggle('on', !NET.radio);
+      $('#netCv').classList.remove('open'); $('#netBody').classList.remove('open');
+      hint(NET.radio ? '已开启 Wi-Fi 射频' : '已关闭 Wi-Fi 射频（飞行模式）');
+    });
+    $('#netCv').addEventListener('click', e => {
+      e.stopPropagation();
+      const body = $('#netBody'), open = !body.classList.contains('open');
+      body.classList.toggle('open', open);
+      e.currentTarget.classList.toggle('open', open);
+      if(open && !NET.scan){ NET.scan = true; paintNetList(); }
+    });
+    $('#netAir').addEventListener('click', () => {
+      NET.radio = !NET.radio; NET.scan = false;
+      wifiPaint(); $('#netAir').classList.toggle('on', !NET.radio);
+      $('#netCv').classList.remove('open'); $('#netBody').classList.remove('open');
+    });
+    $$('#netList .wifi-i').forEach(it => it.addEventListener('click', () => {
+      NET.ssid = it.dataset.ssid; wifiPaint();
+      closeAllPops(); hint('已连接到 ' + NET.ssid);
+    }));
   } else if(kind === 'vol'){
-    p.innerHTML = `<div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">${icon('volume')} 声音</div>
-      <div class="vol"><span style="font-size:12.5px;color:var(--text-3)">0</span><div class="slider"><i style="width:68%"></i></div><span style="font-size:12.5px;color:var(--text-3)">100</span></div>
-      <div class="msep"></div>
-      <div class="row" style="border:none;padding-top:8px"><div class="t" style="font-size:12.5px">静音</div><div class="sw" data-toggle></div></div>`;
+    p.classList.remove('pop-net'); p.classList.add('pop-vol');
+    p.innerHTML = `
+      <div class="vp">
+        <div class="num" id="vpNum"></div>
+        <div class="vsl" id="vpSl" role="slider" aria-label="主音量" tabindex="0">
+          <div class="fill"></div><div class="knob"></div>
+        </div>
+        <button class="vmute" id="vpMute" title="静音 / 取消静音">${icon('volume')}</button>
+        <div class="hint">托盘图标上滚轮可直接调节</div>
+      </div>`;
+    volPaint();
+    bindVSlider($('#vpSl'));
+    $('#vpMute').addEventListener('click', toggleMute);
   } else {
+    p.classList.remove('pop-net','pop-vol');
     p.innerHTML = `<div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px">${icon('battery')} 电量</div>
       <div style="margin-top:8px;font-size:12.5px;color:var(--text-2)">剩余 78% · 预计可用 4 小时 12 分</div>
       <div class="slider" style="margin-top:10px"><i style="width:78%"></i></div>
@@ -2069,10 +2236,75 @@ function trayPop(kind, anchor){
   showPop('#traypop', anchor);
 }
 
+/* ---- 网络列表：只在展开时渲染一次，不做扫描动画 ---- */
+function paintNetList(){
+  const box = $('#netList'); if(!box) return;
+  box.innerHTML = NET.list.map(s =>
+    `<div class="wifi-i" data-ssid="${s}">${icon('wifi')}<span>${s}</span></div>`).join('');
+}
+
+/* ---- 纵向滑块：拖点 + 键盘 ---- */
+function bindVSlider(sl){
+  if(!sl) return;
+  const fromY = clientY => {
+    const r = sl.getBoundingClientRect();
+    setVol((r.bottom - clientY) / r.height * 100);
+  };
+  sl.addEventListener('pointerdown', e => {
+    sl.setPointerCapture(e.pointerId); fromY(e.clientY);
+    const move = ev => fromY(ev.clientY);
+    const up = () => { sl.removeEventListener('pointermove', move); sl.removeEventListener('pointerup', up); };
+    sl.addEventListener('pointermove', move); sl.addEventListener('pointerup', up);
+  });
+  sl.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 10 : 5;
+    if(e.key === 'ArrowUp'){ e.preventDefault(); setVol(VOL.v + step); }
+    else if(e.key === 'ArrowDown'){ e.preventDefault(); setVol(VOL.v - step); }
+    else if(e.key === 'Home'){ e.preventDefault(); setVol(0); }
+    else if(e.key === 'End'){ e.preventDefault(); setVol(100); }
+  });
+}
+
+/* ---- 开始菜单电源分裂按钮 ---- */
+const PW_ITEMS = [
+  {n:'睡眠',  i:'moon'},
+  {n:'重启',  i:'refresh'},
+  {n:'注销',  i:'logout'},
+  {n:'锁屏',  i:'shield'},
+  {n:'切换用户', i:'swap'},
+];
+function powerMenu(anchor){
+  const p = $('#pwpop');
+  p.innerHTML = PW_ITEMS.map(it =>
+    `<div class="mi" data-act="${it.n}">${icon(it.i)}<span>${it.n}</span></div>`).join('')
+    + `<div class="msep"></div><div class="mi danger" data-act="关机">${icon('power')}<span>关机</span></div>`;
+  const r = anchor.getBoundingClientRect();
+  const op = p.offsetParent || $('#desktop');
+  const or = op.getBoundingClientRect();
+  const w = 158;
+  // 右对齐到分裂按钮右缘，向上弹出；做视口边界 clamp，保证 800×600 下不越界
+  p.style.right = 'auto';
+  p.style.left = clamp(r.right - or.left - w, 8, Math.max(8, or.width - w - 8)) + 'px';
+  p.style.bottom = clamp(or.bottom - r.top + 6, 8, Math.max(8, or.height - 8)) + 'px';
+  // 只关掉其它弹层，保留开始菜单本身（二级菜单是它的子层）
+  const wasOpen = p.classList.contains('show');
+  POPS.forEach(s => { if(s !== '#pwpop' && s !== '#start') $(s).classList.remove('show'); });
+  if(wasOpen){ p.classList.remove('show'); return; }
+  p.classList.add('show');
+  $$('#pwpop .mi').forEach(m => m.addEventListener('click', () => {
+    closeAllPops();
+    hint(m.dataset.act === '关机' ? '正在关机…' : '执行：' + m.dataset.act);
+  }));
+}
+// 点击其它任意位置收起电源二级菜单（不收起开始菜单）
+document.addEventListener('click', e => {
+  if(!e.target.closest('#pwpop') && !e.target.closest('.sb-arrow')) $('#pwpop').classList.remove('show');
+});
+
 /* ==========================================================================
    弹层开关
    ========================================================================== */
-const POPS = ['#ctx','#start','#notif','#cal','#traypop'];
+const POPS = ['#ctx','#start','#notif','#cal','#traypop','#pwpop'];
 function closeAllPops(except){
   POPS.forEach(s => { if(s !== except) $(s).classList.remove('show'); });
   $('#startBtn').classList.remove('on');
@@ -2103,6 +2335,14 @@ $('#clock').addEventListener('click', () => { renderCal(); showPop('#cal', $('#c
 $('#clock').addEventListener('contextmenu', e => { e.preventDefault(); taskbarMenu(e.clientX, e.clientY); });
 $('#trayNet').addEventListener('click', () => trayPop('net', $('#trayNet')));
 $('#trayVol').addEventListener('click', () => trayPop('vol', $('#trayVol')));
+// 滚轮直接调音量：不打开面板、零弹层开销（GNOME 行为）
+$('#trayVol').addEventListener('wheel', e => {
+  e.preventDefault();
+  setVol(VOL.v + (e.deltaY < 0 ? 5 : -5));
+  if($('#traypop').classList.contains('show')) volPaint();
+}, {passive:false});
+// 中键点击 = 静音切换
+$('#trayVol').addEventListener('auxclick', e => { if(e.button === 1){ e.preventDefault(); toggleMute(); } });
 $('#trayBat').addEventListener('click', () => trayPop('bat', $('#trayBat')));
 $('#peek').addEventListener('click', () => WM.showDesktop());
 $('#taskbar').addEventListener('contextmenu', e => {
